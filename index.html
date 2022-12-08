@@ -70,11 +70,11 @@
       const EventHandling = {
         data() {
           return {
-            loan_amount: '',
-            loan_period: '',
-            loan_date: '',
-            payment_date: '', 
-            interest_rate: 4.5,
+              loan_amount: '',
+              loan_period: 1,
+              loan_date: moment().format("YYYY-MM-DD"),
+              payment_date: moment().add(1, 'months').format("YYYY-MM-DD"), 
+              interest_rate: 4.5,
           }
         },
         methods: {
