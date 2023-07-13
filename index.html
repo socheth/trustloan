@@ -26,127 +26,129 @@
 </a>
 <div class="border-top border-5 border-dark my-4"></div>
 <h1 class="text-center h3 mb-5 text-decoration-underline">តារាងលម្អិតនៃការបង់ប្រាក់របស់អតិថិជន</h1>
-<div class="row g-3 mb-3">
-<div class="col-6 col-md-3 align-self-center fs-5">អត្រាការប្រាក់</div>
-<div class="col-6 col-md-3"><input type="number" v-model.number="interest_rate" class="form-control" /></div>
-</div>
-<div class="row g-3">
-<div class="col-6 col-md-3 align-self-center fs-5">ប្រាក់ដែលបានខ្ចី</div>
-<div class="col-6 col-md-3"><input type="number" v-model.number="loan_amount" placeholder="USD" class="form-control" /></div>
-<div class="col-6 col-md-3 align-self-center text-md-end fs-5">ថ្ងៃដែលបានខ្ចី</div>
-<div class="col-6 col-md-3"><input type="date" v-model="loan_date" class="form-control" /></div>
-<div class="col-6 col-md-3 align-self-center fs-5">រយៈពេលខ្ចី</div>
-<div class="col-6 col-md-3"><input type="number" v-model.number="loan_period" placeholder="Months" class="form-control" /></div>
-<div class="col-6 col-md-3 align-self-center text-md-end fs-5">ថ្ងៃបង់ដំបូង</div>
-<div class="col-6 col-md-3"><input type="date" v-model="payment_date" class="form-control" /></div>
-</div>
-<div class="table-responsive mt-5">
-<table class="table table-hover">
-<thead>
-<tr>
-<th scope="col" class="text-nowrap">#</th>
-<th scope="col" class="text-nowrap">កាលបរិច្ឆេទ</th>
-<th scope="col" class="text-nowrap">ប្រាក់ដើម</th>
-<th scope="col" class="text-nowrap">ប្រាក់ត្រូវបង់</th>
-<th scope="col" class="text-nowrap">ប្រាក់បង់ផ្តាច់</th>
-</tr>
-</thead>
-<tbody>
-<tr v-for="(row, index) in loan_period" :key="index">
-<th scope="row">{{ row }}</th>
-<td>{{ Monthly(index) }}</td>
-<td>${{ Principal() }}</td>
-<td>${{ Monthly_Payment(row) }}</td>
-<td>${{ Payoff_Amount(row) }}</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@3.2.26/dist/vue.global.prod.js" crossorigin="anonymous"></script>
-<script>
-      
-      const EventHandling = {
-        data() {
-          return {
-              loan_amount: '',
-              loan_period: 1,
-              loan_date: moment().format("YYYY-MM-DD"),
-              payment_date: moment().add(1, 'months').format("YYYY-MM-DD"), 
-              interest_rate: 4.5,
-          }
-        },
-        methods: {
-          Monthly: function(num) {
-            
-            return moment(this.payment_date).add(num, 'months').format("DD/MMM/YY");
-          },                
-          Principal: function() {
-            
-            return this.ROUND_UP(this.loan_amount / this.loan_period);
-          },
-          First_Payment: function() {
-            
-            const Number_of_Days = moment(this.payment_date).diff(this.loan_date,'days');
-            
-            return this.ROUND_UP(this.loan_amount * (1 + this.interest_rate * Number_of_Days / 30 * this.loan_period / 100) / this.loan_period);
-          },
-          Next_Payment: function() {
-            
-            return this.ROUND_UP(this.loan_amount * (1 + this.interest_rate * this.loan_period / 100) / this.loan_period);
-          },
-          Last_Payment: function() {
-            
-            return this.ROUND_UP(this.Next_Payment() - (Math.round(this.Next_Payment()) - this.Next_Payment()) * (this.loan_period - 1) - (Math.round(this.First_Payment()) - this.First_Payment()));
-          },
-          Monthly_Payment: function(row) {
-            
-            if(row == 1)
-              return this.First_Payment();
-            
-            else if(row < this.loan_period)
-              return this.Next_Payment();
-            
-            else
-              return this.Last_Payment();
-          },
-          Payoff_Amount1: function() {
-            
-            return this.ROUND_UP(this.loan_amount * (1 + this.interest_rate * 3 / 100));
-          },
-          Payoff_Amount2: function() {
-            
-            return this.ROUND_UP(this.loan_amount * (1 + this.interest_rate * 2 / 100) - this.Principal());
-          },
-          Payoff_Amount3: function(row) {
-            
-            if(row < this.loan_period)
-              return this.ROUND_UP(this.loan_amount * (1 + this.interest_rate / 100) - this.Principal() * (row - 1));
-            
-            else
-              return this.Last_Payment();
-          },
-          Payoff_Amount: function(row) {
-            
-            if(row == 1)
-              return this.Payoff_Amount1();
-            
-            else if(row == 2)
-              return this.Payoff_Amount2();
-            
-            else
-              return this.Payoff_Amount3(row);
-          },
-          ROUND_UP: function(num) {
-            
-            return Math.round(num);
-          },
-          
-        }
-      }
-      
-      Vue.createApp(EventHandling).mount('#app');
-    </script>
+			<div class="row g-3 mb-3">
+				<div class="col-6 col-md-3 align-self-center fs-5">អត្រាការប្រាក់</div>
+				<div class="col-6 col-md-3"><input type="number" v-model.number="interest_rate" class="form-control" /></div>
+			</div>
+			<div class="row g-3">
+				<div class="col-6 col-md-3 align-self-center fs-5">ប្រាក់ដែលបានខ្ចី</div>
+				<div class="col-6 col-md-3"><input type="number" v-model.number="loan_amount" placeholder="USD" class="form-control" /></div>
+				<div class="col-6 col-md-3 align-self-center text-md-end fs-5">ថ្ងៃដែលបានខ្ចី</div>
+				<div class="col-6 col-md-3"><input type="date" v-model="loan_date" class="form-control" /></div>
+				<div class="col-6 col-md-3 align-self-center fs-5">រយៈពេលខ្ចី</div>
+				<div class="col-6 col-md-3"><input type="number" v-model.number="loan_period" placeholder="Months" class="form-control" /></div>
+				<div class="col-6 col-md-3 align-self-center text-md-end fs-5">ថ្ងៃបង់ដំបូង</div>
+				<div class="col-6 col-md-3"><input type="date" v-model="payment_date" class="form-control" /></div>
+			</div>
+			<div class="table-responsive mt-5">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col" class="text-nowrap">#</th>
+							<th scope="col" class="text-nowrap">កាលបរិច្ឆេទ</th>
+							<th scope="col" class="text-nowrap">ប្រាក់ដើម</th>
+							<th scope="col" class="text-nowrap">ប្រាក់ត្រូវបង់</th>
+							<th scope="col" class="text-nowrap">ប្រាក់បង់ផ្តាច់</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr v-for="(row, index) in loan_period" :key="index">
+							<th scope="row">{{ row }}</th>
+							<td>{{ Monthly(index) }}</td>
+							<td>${{ Principal() }}</td>
+							<td>${{ Monthly_Payment(row) }}</td>
+							<td>${{ Payoff_Amount(row) }}</td>
+						</tr>
+                        
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vue@3.2.26/dist/vue.global.prod.js" crossorigin="anonymous"></script>
+		<script>
+			
+			const EventHandling = {
+				data() {
+					return {
+					      loan_amount: '',
+					      loan_period: 1,
+					      loan_date: moment().format("YYYY-MM-DD"),
+					      payment_date: moment().add(1, 'months').format("YYYY-MM-DD"), 
+					      interest_rate: 4.5,
+					  }
+				},
+				methods: {
+					Monthly: function(num) {
+						
+						return moment(this.payment_date).add(num, 'months').format("DD/MMM/YY");
+					},                
+					Principal: function() {
+						
+						return (this.loan_amount / this.loan_period).toFixed(1);
+					},
+					First_Payment: function() {
+						
+						const Number_of_Days = moment(this.payment_date).diff(this.loan_date,'days');
+						
+						return (this.loan_amount * (1 + this.interest_rate * Number_of_Days / 30 * this.loan_period / 100) / this.loan_period);
+					},
+					Next_Payment: function() {
+						
+						return (this.loan_amount * (1 + this.interest_rate * this.loan_period / 100) / this.loan_period);
+					},
+					Last_Payment: function() {
+						
+						return (this.Next_Payment() - (this.ROUND_UP(this.Next_Payment()) - this.Next_Payment()) * (this.loan_period - 2) - (this.ROUND_UP(this.First_Payment()) - this.First_Payment())).toFixed(1);
+					},
+					Monthly_Payment: function(row) {
+						
+						if(row == 1)
+							return this.ROUND_UP(this.First_Payment());
+						
+						else if(row < this.loan_period)
+							return this.ROUND_UP(this.Next_Payment());
+						
+						else
+							return this.Last_Payment();
+					},
+					Payoff_Amount1: function() {
+						
+						return this.ROUND_UP(this.loan_amount * (1 + this.interest_rate * 3 / 100));
+					},
+					Payoff_Amount2: function() {
+						
+						return this.ROUND_UP(this.loan_amount * (1 + this.interest_rate * 2 / 100) - this.Principal());
+					},
+					Payoff_Amount3: function(row) {
+						
+						if(row < this.loan_period)
+							return this.ROUND_UP(this.loan_amount * (1 + this.interest_rate / 100) - this.Principal() * (row - 1));
+						
+						else
+							return this.Last_Payment();
+					},
+					Payoff_Amount: function(row) {
+						
+						if(row == 1)
+							return this.Payoff_Amount1();
+						
+						else if(row == 2)
+							return this.Payoff_Amount2();
+						
+						else
+							return this.Payoff_Amount3(row);
+					},
+					ROUND_UP: function(num) {
+						
+						return Math.ceil(num);
+					},
+					
+				}
+			}
+			
+			Vue.createApp(EventHandling).mount('#app');
+		</script>
 </body>
 </html>
